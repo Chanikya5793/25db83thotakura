@@ -52,7 +52,7 @@ async function recreateDB(){
   });
 }
 
-let reseed = true;
+let reseed = false;
 if (reseed) {recreateDB();}
 
 var app = express();

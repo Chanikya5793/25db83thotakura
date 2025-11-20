@@ -2,16 +2,25 @@ extends layout
 
 block content
   h1= title
+  a.btn.btn-primary.mb-3(href='/costumes/create') + Add Costume
   - let items = results
-  div(class="container-fluid")
-    div(class="row")
-      each item, index in items
-        div(class="col-sm-2" onclick=`buy(${index})`) 
-          p Costume Type: #{item.costume_type}
-          p Size: #{item.size}
-          p Cost: $#{item.cost}
-  
-  script.
-    function buy(index) {
-      alert("You purchased item " + index);
-    }
+  if (!items || items.length === 0)
+    .alert.alert-info No costumes found. Click the button above to create one.
+  else
+    .container-fluid
+      .row
+        each item in items
+          .col-md-4.mb-3
+            .card.costume-card
+              .card-body
+                h5.card-title #{item.costume_type || 'Untitled Costume'}
+                p.card-text
+                  strong Size:
+                  |  #{item.size}
+                p.card-text
+                  strong Cost:
+                  |  $#{item.cost}
+                .btn-group.mt-3
+                  a.btn.btn-outline-secondary.btn-sm(href=`/costumes/detail/?id=${item._id}`) Detail
+                  a.btn.btn-outline-primary.btn-sm(href=`/costumes/update/?id=${item._id}`) Update
+                  a.btn.btn-outline-danger.btn-sm(href=`/costumes/delete/?id=${item._id}`) Delete

@@ -11,4 +11,7 @@ router.get('/detail', costume_controller.costume_view_one_Page);
 /* GET create costume page */
 router.get('/create', costume_controller.costume_create_Page);
 
+/* GET update costume page */
+router.get('/update', costume_controller.costume_update_Page);
+
 module.exports = router;

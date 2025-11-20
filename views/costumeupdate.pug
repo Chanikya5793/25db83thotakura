@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  h1= title
+  - let costumeid = toShow._id
+  - let costume_type = toShow.costume_type
+  - let costumecost = toShow.cost
+  - let costumesize = toShow.size
+
+  .row.mb-2
+    .mr-1 ID is
+    div #{costumeid}
+  - let actionid = "/resource/costumes/" + costumeid
+  form#CostumeForm(action=actionid, method="PUT")
+    .form-group
+      label.costumeAttr(for='costume_type') Costume type
+      input#costume_type(type='text', name='costume_type', value=costume_type)
+    .form-group
+      label.costumeAttr(for='size') Costume size
+      input#size(type='text', name='size', value=costumesize)
+    .form-group
+      label.costumeAttr(for='cost') Costume cost
+      input#cost(type='number', name='cost', value=costumecost, step='0.01')
+    input(type="submit", value="Update Costume")
+  script.
+    document.forms['CostumeForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      fetch(event.target.action, {
+        method: 'PUT',
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        if(!resp.ok){
+          throw new Error('Request failed with status ' + resp.status);
+        }
+        return resp.json();
+      }).then((body) => {
+        alert("Update succeeded");
+      }).catch((error) => {
+        alert("Update failed " + error);
+      });
+    });

@@ -1,0 +1,49 @@
+extends layout
+
+block content
+  h1= title
+  if toShow
+    - let costumeid = toShow._id
+    - let costume_type = toShow.costume_type
+    - let costumecost = toShow.cost
+    - let costumesize = toShow.size
+    div
+      .row
+        div.costumeAttr.mr-3 Costume ID is:
+        div #{costumeid}
+      .row
+        div.costumeAttr.mr-3 Costume Type is:
+        div #{costume_type}
+      .row
+        div.costumeAttr.mr-3 Costume Size is:
+        div #{costumesize}
+      .row
+        div.costumeAttr.mr-3 Costume Cost is:
+        div #{costumecost}
+      .row.mt-3
+        button.btn.btn-danger.mr-2(type='button', id='deleteButton') Delete
+        button.btn.btn-secondary(type='button', id='cancelButton') Cancel
+    script.
+      const deleteBtn = document.getElementById('deleteButton');
+      const cancelBtn = document.getElementById('cancelButton');
+      deleteBtn.addEventListener('click', () => {
+        fetch(`/resource/costumes/${toShow._id}`, {
+          method: 'DELETE'
+        }).then(resp => {
+          if(!resp.ok){
+            throw new Error('Request failed with status ' + resp.status);
+          }
+          return resp.json();
+        }).then(() => {
+          alert('Delete succeeded');
+          window.location.href = '/costumes';
+        }).catch(err => {
+          alert('Delete failed ' + err);
+        });
+      });
+      cancelBtn.addEventListener('click', () => {
+        window.location.href = '/costumes';
+      });
+  else
+    div.alert.alert-warning No costume found for the given id.
+    button.btn.btn-secondary(type='button', onclick="window.location.href='/costumes'") Go Back

@@ -1,25 +1,31 @@
 extends layout
 
 block content
-  h1= title
+  h1 Costume Detail
   if (!toShow)
-    .alert.alert-warning No costume found for the given id. Please return to the list and try again.
-    a.btn.btn-secondary.mt-2(href='/costumes') Back to costumes
+    .alert No costume found for the given id. Please return to the list and try again.
+    .costume-actions
+      a.btn.btn-secondary(href='/costumes') Back to costumes
   else
-    - let costumeid = toShow._id
-    - let costume_type = toShow.costume_type
-    - let costumecost = toShow.cost
-    - let costumesize = toShow.size
-    div
-      .row
-        div.costumeAttr.mr-3 Costume ID is:
-        div #{costumeid}
-      .row
-        div.costumeAttr.mr-3 Costume Type is:
-        div #{costume_type}
-      .row
-        div.costumeAttr.mr-3 Costume Size is:
-        div #{costumesize}
-      .row
-        div.costumeAttr.mr-3 Costume Cost is:
-        div #{costumecost}
+    - const costumeid = toShow._id
+    - const costume_type = toShow.costume_type
+    - const costumecost = toShow.cost
+    - const costumesize = toShow.size
+    - const costumecolor = toShow.color || '—'
+    .detail-card
+      h2 #{costume_type}
+      .detail-row
+        span.costumeAttr Costume ID
+        span #{costumeid}
+      .detail-row
+        span.costumeAttr Size
+        span #{costumesize}
+      .detail-row
+        span.costumeAttr Color
+        span #{costumecolor}
+      .detail-row
+        span.costumeAttr Cost
+        span $#{costumecost}
+    .costume-actions
+      a.btn.btn-outline(href='/costumes') Back to list
+      a.btn.btn-primary(href=`/costumes/update?id=${costumeid}`) Edit

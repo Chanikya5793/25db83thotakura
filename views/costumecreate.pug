@@ -1,18 +1,24 @@
 extends layout
 
 block content
-  h1= title
-  form#CostumeForm(action="/resource/costumes", method="POST")
-    .form-group
-      label.costumeAttr(for='costume_type') Costume type
-      input#costume_type(type='text', name='costume_type', required)
-    .form-group
-      label.costumeAttr(for='size') Costume size
-      input#size(type='text', name='size', required)
-    .form-group
-      label.costumeAttr(for='cost') Costume cost
-      input#cost(type='number', name='cost', step='0.01', required)
-    input(type="submit", value="Create Costume")
+  h1 Create Costume
+  .form-shell
+    form#CostumeForm(action="/resource/costumes", method="POST")
+      .form-group
+        label(for='costume_type') Costume type
+        input#costume_type(type='text', name='costume_type', required)
+      .form-group
+        label(for='size') Costume size
+        input#size(type='text', name='size', required)
+      .form-group
+        label(for='color') Costume color
+        input#color(type='text', name='color')
+      .form-group
+        label(for='cost') Costume cost ($)
+        input#cost(type='number', name='cost', step='0.01', required)
+      .costume-actions
+        button.btn.btn-primary(type='submit') Create costume
+        a.btn.btn-secondary(href='/costumes') Cancel
   script.
     document.forms['CostumeForm'].addEventListener('submit', (event) => {
       event.preventDefault();
@@ -26,6 +32,7 @@ block content
         return resp.json();
       }).then((body) => {
         alert("Save succeeded");
+        window.location.href = '/costumes';
       }).catch((error) => {
         alert("Save failed " + error);
       });

@@ -1,26 +1,32 @@
 extends layout
 
 block content
-  h1= title
-  a.btn.btn-primary.mb-3(href='/costumes/create') + Add Costume
-  - let items = results
-  if (!items || items.length === 0)
-    .alert.alert-info No costumes found. Click the button above to create one.
+  - const items = results || []
+  .page-header
+    h1 Costume Inventory
+    p.page-intro Manage every look in one glance. Add new outfits, or jump straight into detail, edit, or delete flows.
+    a.btn.btn-primary(href='/costumes/create') + Add Costume
+
+  if items.length === 0
+    .alert
+      strong No costumes yet.
+      |  Click “+ Add Costume” to start filling the wardrobe.
   else
-    .container-fluid
-      .row
-        each item in items
-          .col-md-4.mb-3
-            .card.costume-card
-              .card-body
-                h5.card-title #{item.costume_type || 'Untitled Costume'}
-                p.card-text
-                  strong Size:
-                  |  #{item.size}
-                p.card-text
-                  strong Cost:
-                  |  $#{item.cost}
-                .btn-group.mt-3
-                  a.btn.btn-outline-secondary.btn-sm(href=`/costumes/detail/?id=${item._id}`) Detail
-                  a.btn.btn-outline-primary.btn-sm(href=`/costumes/update/?id=${item._id}`) Update
-                  a.btn.btn-outline-danger.btn-sm(href=`/costumes/delete/?id=${item._id}`) Delete
+    .costume-grid
+      each item in items
+        - const label = item.costume_type || 'Untitled Costume'
+        article.costume-card
+          h3 #{label}
+          p.meta
+            strong Size:
+            |  #{item.size || '—'}
+          p.meta
+            strong Color:
+            |  #{item.color || '—'}
+          p.meta
+            strong Cost:
+            |  $#{item.cost}
+          .costume-actions
+            a.btn.btn-outline(href=`/costumes/detail?id=${item._id}`) View
+            a.btn.btn-outline(href=`/costumes/update?id=${item._id}`) Edit
+            a.btn.btn-danger(href=`/costumes/delete?id=${item._id}`) Delete

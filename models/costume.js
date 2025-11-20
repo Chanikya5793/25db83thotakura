@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const costumeSchema = mongoose.Schema({
   costume_type: String,
   size: String,
+  color: String,
   cost: Number
 });
 

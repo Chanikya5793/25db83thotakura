@@ -34,6 +34,7 @@ exports.costume_create_post = async function(req, res) {
     // {"costume_type":"goat", "cost":12, "size":"large"}
     document.costume_type = req.body.costume_type;
     document.cost = req.body.cost;
+    document.color = req.body.color;
     document.size = req.body.size;
     try{
         let result = await document.save();
@@ -68,6 +69,7 @@ exports.costume_update_put = async function(req, res) {
             toUpdate.costume_type = req.body.costume_type;
         if(req.body.cost) toUpdate.cost = req.body.cost;
         if(req.body.size) toUpdate.size = req.body.size;
+        if(req.body.color) toUpdate.color = req.body.color;
         let result = await toUpdate.save();
         console.log("Sucess " + result)
         res.send(result)

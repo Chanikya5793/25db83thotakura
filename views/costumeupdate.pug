@@ -1,31 +1,39 @@
 extends layout
 
 block content
-  h1= title
+  h1 Costume Update
   if (!toShow)
-    .alert.alert-warning No costume found for the given id. Please return to the list view and try again.
-    a.btn.btn-secondary.mt-2(href='/costumes') Back to costumes
+    .alert No costume found for the given id. Please return to the list view and try again.
+    .costume-actions
+      a.btn.btn-secondary(href='/costumes') Back to costumes
   else
-    - let costumeid = toShow._id
-    - let costume_type = toShow.costume_type
-    - let costumecost = toShow.cost
-    - let costumesize = toShow.size
+    - const costumeid = toShow._id
+    - const costume_type = toShow.costume_type
+    - const costumecost = toShow.cost
+    - const costumesize = toShow.size
+    - const costumecolor = toShow.color
 
-    .row.mb-2
-      .mr-1 ID is
-      div #{costumeid}
-    - let actionid = "/resource/costumes/" + costumeid
-    form#CostumeForm(action=actionid, method="PUT")
-      .form-group
-        label.costumeAttr(for='costume_type') Costume type
-        input#costume_type(type='text', name='costume_type', value=costume_type)
-      .form-group
-        label.costumeAttr(for='size') Costume size
-        input#size(type='text', name='size', value=costumesize)
-      .form-group
-        label.costumeAttr(for='cost') Costume cost
-        input#cost(type='number', name='cost', value=costumecost, step='0.01')
-      input(type="submit", value="Update Costume")
+    .form-shell
+      .detail-row
+        span.costumeAttr ID
+        span #{costumeid}
+      - const actionid = `/resource/costumes/${costumeid}`
+      form#CostumeForm(action=actionid, method="PUT")
+        .form-group
+          label(for='costume_type') Costume type
+          input#costume_type(type='text', name='costume_type', value=costume_type)
+        .form-group
+          label(for='size') Costume size
+          input#size(type='text', name='size', value=costumesize)
+        .form-group
+          label(for='color') Costume color
+          input#color(type='text', name='color', value=costumecolor)
+        .form-group
+          label(for='cost') Costume cost ($)
+          input#cost(type='number', name='cost', value=costumecost, step='0.01')
+        .costume-actions
+          button.btn.btn-primary(type='submit') Update costume
+          a.btn.btn-secondary(href='/costumes') Cancel
     script.
       document.forms['CostumeForm'].addEventListener('submit', (event) => {
         event.preventDefault();
@@ -39,6 +47,7 @@ block content
           return resp.json();
         }).then((body) => {
           alert("Update succeeded");
+          window.location.href = '/costumes/detail?id=' + event.target.action.split('/').pop();
         }).catch((error) => {
           alert("Update failed " + error);
         });

@@ -1,27 +1,29 @@
 extends layout
 
 block content
-  h1= title
+  h1 Delete Costume
   if toShow
-    - let costumeid = toShow._id
-    - let costume_type = toShow.costume_type
-    - let costumecost = toShow.cost
-    - let costumesize = toShow.size
-    div
-      .row
-        div.costumeAttr.mr-3 Costume ID is:
-        div #{costumeid}
-      .row
-        div.costumeAttr.mr-3 Costume Type is:
-        div #{costume_type}
-      .row
-        div.costumeAttr.mr-3 Costume Size is:
-        div #{costumesize}
-      .row
-        div.costumeAttr.mr-3 Costume Cost is:
-        div #{costumecost}
-      .row.mt-3
-        button.btn.btn-danger.mr-2(type='button', id='deleteButton') Delete
+    - const costumeid = toShow._id
+    - const costume_type = toShow.costume_type
+    - const costumecost = toShow.cost
+    - const costumesize = toShow.size
+    - const costumecolor = toShow.color || '—'
+    .detail-card
+      h2 Are you sure you want to delete “#{costume_type}”?
+      .detail-row
+        span.costumeAttr ID
+        span #{costumeid}
+      .detail-row
+        span.costumeAttr Size
+        span #{costumesize}
+      .detail-row
+        span.costumeAttr Color
+        span #{costumecolor}
+      .detail-row
+        span.costumeAttr Cost
+        span $#{costumecost}
+      .costume-actions
+        button.btn.btn-danger(type='button', id='deleteButton') Delete
         button.btn.btn-secondary(type='button', id='cancelButton') Cancel
     script.
       const deleteBtn = document.getElementById('deleteButton');
@@ -45,5 +47,5 @@ block content
         window.location.href = '/costumes';
       });
   else
-    div.alert.alert-warning No costume found for the given id.
+    .alert No costume found for the given id.
     button.btn.btn-secondary(type='button', onclick="window.location.href='/costumes'") Go Back

@@ -3,6 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var session = require('express-session');
 
 require('dotenv').config();
 const connectionString = process.env.MONGO_CON;
@@ -24,6 +27,7 @@ var resourceRouter = require('./routes/resource');
 var costumesRouter = require('./routes/costumes');
 
 var Costume = require("./models/costume");
+var Account = require('./models/account');
 
 // We can seed the collection if needed on server start
 async function recreateDB(){
@@ -65,12 +69,24 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/resource', resourceRouter);
 app.use('/costumes', costumesRouter);
+
+// Passport config ties authentication to the Account model
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

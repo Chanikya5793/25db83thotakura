@@ -30,3 +30,8 @@ block content
             a.btn.btn-outline(href=`/costumes/detail?id=${item._id}`) View
             a.btn.btn-outline(href=`/costumes/update?id=${item._id}`) Edit
             a.btn.btn-danger(href=`/costumes/delete?id=${item._id}`) Delete
+            button.btn.btn-primary(type='button', onclick=`dispatch('/costumes/update?id=${item._id}')`) Update
+  script.
+    function dispatch(path) {
+      window.location.href = path;
+    }

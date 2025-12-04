@@ -5,7 +5,7 @@ block content
   .page-header
     h1 Costume Inventory
     p.page-intro Manage every look in one glance. Add new outfits, or jump straight into detail, edit, or delete flows.
-    a.btn.btn-primary(href='/costumes/create') + Add Costume
+    button.btn.btn-primary(type='button', onclick="dispatch('/costumes/create')") + Add Costume
 
   if items.length === 0
     .alert
@@ -27,10 +27,9 @@ block content
             strong Cost:
             |  $#{item.cost}
           .costume-actions
-            a.btn.btn-outline(href=`/costumes/detail?id=${item._id}`) View
-            a.btn.btn-outline(href=`/costumes/update?id=${item._id}`) Edit
-            a.btn.btn-danger(href=`/costumes/delete?id=${item._id}`) Delete
+            button.btn.btn-outline(type='button', onclick=`dispatch('/costumes/detail?id=${item._id}')`) Detail
             button.btn.btn-primary(type='button', onclick=`dispatch('/costumes/update?id=${item._id}')`) Update
+            button.btn.btn-danger(type='button', onclick=`dispatch('/costumes/delete?id=${item._id}')`) Delete
   script.
     function dispatch(path) {
       window.location.href = path;
